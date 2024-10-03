@@ -1,0 +1,11 @@
+//HOST
+//HOST-SUFFIX
+//HOST-WILDCARD
+//HOST-KEYWORD
+//USER-AGENT
+//IP-CIDR
+
+HOST-SUFFIX,revenuecat.com,OpenAI
+HOST-SUFFIX,sentry.io,OpenAI
+HOST-SUFFIX,chatgpt.com,OpenAI
+HOST-SUFFIX,openai.com,OpenAI
