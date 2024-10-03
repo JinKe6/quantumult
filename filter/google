@@ -5,5 +5,7 @@
 //USER-AGENT
 //IP-CIDR
 
+HOST-SUFFIX,ggpht.com,Google
+HOST-SUFFIX,ytimg.com,Google
 HOST-KEYWORD,google,Google
 HOST-KEYWORD,gmail,Google
