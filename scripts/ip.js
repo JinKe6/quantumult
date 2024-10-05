@@ -4,6 +4,6 @@ const { query:ip } = JSON.parse(body);
 
 
 const title= `  `;
-const subtitle = `位置IP:${ip}`;
+const subtitle = `IP地址:${ip}`;
 
 $done({ title,subtitle,ip });
