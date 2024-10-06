@@ -7,3 +7,5 @@
 
 HOST-KEYWORD,akamaized,DIRECT
 HOST-KEYWORD,spotify,Spotify
+IP-CIDR,104.154.127.126/32,Spotify
+IP-CIDR,35.186.224.47/32,Spotify
