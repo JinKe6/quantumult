@@ -5,11 +5,6 @@
 //USER-AGENT
 //IP-CIDR
 
-IP-ASN,44907,Telegram
-IP-ASN,62014,Telegram
-IP-ASN,62041,Telegram
-IP-ASN,59930,Telegram
-IP-ASN,211157,Telegram
 IP-CIDR,109.239.140.0/24,Telegram
 IP-CIDR,149.154.160.0/20,Telegram
 IP-CIDR,5.28.192.0/18,Telegram
