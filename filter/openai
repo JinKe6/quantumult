@@ -5,6 +5,6 @@
 //USER-AGENT
 //IP-CIDR
 
-HOST-KEYWORD,openai,OpenAI
-HOST-KEYWORD,chatgpt,OpenAI
+HOST-SUFFIX,openai.com,OpenAI
+HOST-SUFFIX,chatgpt.com,OpenAI
 HOST-SUFFIX,revenuecat.com,OpenAI
