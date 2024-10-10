@@ -5,8 +5,7 @@
 //USER-AGENT
 //IP-CIDR
 
-IP-CIDR,69.63.176.143/24,Google
-IP-CIDR,199.16.156.38/24,Google
-HOST-KEYWORD,google,Google
+HOST-SUFFIX,youtube.com,Google
+HOST-SUFFIX,google.com,Google
 HOST-KEYWORD,gmail,Google
-HOST-KEYWORD,youtube,Google
+HOST-KEYWORD,google,Google
