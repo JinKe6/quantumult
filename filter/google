@@ -7,5 +7,5 @@
 
 HOST-SUFFIX,youtube.com,Google
 HOST-SUFFIX,google.com,Google
-HOST-KEYWORD,gmail,Google
-HOST-KEYWORD,google,Google
+HOST-SUFFIX,googlevideo.com,Google
+HOST-SUFFIX,googleapis.com,Google
