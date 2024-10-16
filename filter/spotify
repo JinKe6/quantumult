@@ -5,6 +5,8 @@
 //USER-AGENT
 //IP-CIDR
 
+HOST-SUFFIX,branch.io,Spotify
+HOST-SUFFIX,scdn.co,Spotify
 HOST-SUFFIX,akamaized.net,DIRECT
 HOST-SUFFIX,spotify.com,Spotify
 HOST-SUFFIX,spotifycdn.com,Spotify
