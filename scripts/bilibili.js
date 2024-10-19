@@ -102,7 +102,7 @@ if (/^https?:\/\/api\.bilibili\.com\/pgc\/page\/(cinema|bangumi)/.test(url)) {
 }
 
 
-// 我的账户iPad端
+// 我的iPad端
 if (/^https?:\/\/app\.bilibili\.com\/x\/v2\/account\/mine\/ipad/.test(url)) {
     try {
         let obj = JSON.parse(body);
@@ -121,12 +121,13 @@ if (/^https?:\/\/app\.bilibili\.com\/x\/v2\/account\/mine\/ipad/.test(url)) {
         $done({ body: JSON.stringify(obj) });
 
     } catch (error) {
-        $notify("我的账户iPad端错误", error.message);
+        $notify("我的
+                iPad端错误", error.message);
     }
 }
 
 
-// 我的账户iPhone端
+// 我的iPhone端
 if (/^https?:\/\/app\.bilibili\.com\/x\/v2\/account\/mine(?!\/ipad)/.test(url)) {
     try {
         let obj = JSON.parse(body);
@@ -156,6 +157,6 @@ if (/^https?:\/\/app\.bilibili\.com\/x\/v2\/account\/mine(?!\/ipad)/.test(url)) 
         $done({ body: JSON.stringify(obj) });
 
     } catch (error) {
-        $notify("我的账户iPhone端错误", error.message);
+        $notify("我的iPhone端错误", error.message);
     }
 }
