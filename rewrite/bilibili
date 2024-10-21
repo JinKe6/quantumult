@@ -9,4 +9,6 @@
 ^https?:\/\/app\.bilibili\.com\/x\/v2\/account\/mine url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/main/scripts/bilibili.js
 ^https?:\/\/app\.bilibili\.com\/x\/v2\/account\/mine\/ipad url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/main/scripts/bilibili.js
 
-hostname = *.bilibili.com
+^https:\/\/(grpc\.biliapi\.net|app\.bilibili\.com)\/bilibili\.app\.(viewunite\.v1\.View\/View|dynamic\.v2\.Dynamic\/DynAll) url script-response-body https://raw.githubusercontent.com/app2smile/rules/master/js/bilibili-proto.js
+
+hostname = *.bilibili.com,*.biliapi.net
