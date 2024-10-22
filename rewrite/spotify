@@ -1,6 +1,6 @@
 //Spotify
 
 ^https?:\/\/spclient\.wg\.spotify\.com\/bootstrap\/v1\/bootstrap url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/refs/heads/main/scripts/spotify.js
-?:\/\/spclient\.wg\.spotify\.com\/user-customization-service\/v1\/customize url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/refs/heads/main/scripts/spotify.js
+^https?:\/\/spclient\.wg\.spotify\.com\/user-customization-service\/v1\/customize url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/refs/heads/main/scripts/spotify.js
 
 hostname = *.spotify.com
