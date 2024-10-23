@@ -2971,228 +2971,697 @@
 		kind: "message",
 		T: ge
 	}]);
-
-
-var W = class {
-    _times = new Map;
-    name;
-    isDebug = false; // 禁用日志记录
-    className;
-    request;
-    response;
-    static instances = {}; // 初始化 instances 属性
-
-    constructor(e, n, r) {
-        this.name = e ?? "";
-        this.isDebug = false; // 禁用日志记录
-        this.className = n ?? "";
-        this.init();
-    }
-
-    static getInstance(e, n) {
-        let r = "QuanX";
-        W.instances[r] || (W.instances[r] = W.classNames[r](e, r, n));
-        return W.instances[r];
-    }
-
-    createProxy(e) {
-        return new Proxy(e, {
-            get: this.getFn,
-            set: this.setFn
-        });
-    }
-
-    getFn(e, n, r) {
-        return e[n];
-    }
-
-    setFn(e, n, r, s) {
-        e[n] = r;
-        return true;
-    }
-
-    getJSON(e, n = {}) {
-        let r = this.getVal(e);
-        return r ? JSON.parse(r) : n;
-    }
-
-    setJSON(e, n) {
-        this.setVal(JSON.stringify(e), n);
-    }
-
-    getVal(e) {
-        return $persistentStore.read(e);
-    }
-
-    setVal(e, n) {
-        $persistentStore.write(e, n);
-    }
-
-    async fetch(e) {
-        return await new Promise((n, r) => {
-            let { method: s, body: o, bodyBytes: i, ...a } = e,
-                c = i ?? o,
-                f = c instanceof Uint8Array;
-            $httpClient[s.toLowerCase()]({ ...a, body: c, "binary-mode": f }, (m, l, g) => {
-                if (m) r(m);
-                else {
-                    let p = f ? "bodyBytes" : "body";
-                    n({ status: l.status || l.statusCode, headers: l.headers, [p]: g });
-                }
-            });
-        });
-    }
-
-    done(e) {
-        let n = e.response ?? e, r, s;
-        if (n.bodyBytes) {
-            r = n.bodyBytes;
-            delete n.bodyBytes;
-            s = { ...e };
-            s.response ? (s.response.body = r) : (s.body = r);
-        } else {
-            s = e;
-        }
-        $done(s); // 确保调用 Quantumult X 的 $done 结束脚本
-    }
-
-    init() {
-        try {
-            this.request = this.createProxy($request);
-            this.response = this.createProxy($response);
-        } catch (e) {}
-    }
+	var W = class {
+		_times = new Map;
+		name;
+		isDebug;
+		className;
+		request;
+		response;
+		constructor(e, n, r) {
+			this.name = e ? ?"",
+			this.isDebug = r ? .debug ? ?!1,
+			e && this.debug(`$ {
+				e
+			}
+			Start`),
+			this.className = n ? ?"",
+			this.init()
+		}
+		static getInstance(e, n) {
+			let r = "Surge";
+			return typeof $loon < "u" ? r = "Loon": typeof $task < "u" && (r = "QuanX"),
+			W.instances[r] || (W.instances[r] = W.classNames[r](e, r, n)),
+			W.instances[r]
+		}
+		createProxy(e) {
+			return new Proxy(e, {
+				get: this.getFn,
+				set: this.setFn
+			})
+		}
+		getFn(e, n, r) {
+			return e[n]
+		}
+		setFn(e, n, r, s) {
+			return e[n] = r,
+			!0
+		}
+		getJSON(e, n = {}) {
+			let r = this.getVal(e);
+			return r ? JSON.parse(r) : n
+		}
+		setJSON(e, n) {
+			this.setVal(JSON.stringify(e), n)
+		}
+		msg(e = this.name, n = "", r = "", s) {}
+		debug(e) {
+			this.isDebug && (typeof e == "object" && (e = JSON.stringify(e)), console.log(e))
+		}
+		log(e) {
+			typeof e == "object" && (e = JSON.stringify(e)),
+			console.log(e)
+		}
+		timeStart(e) {
+			this._times.set(e, Date.now())
+		}
+		timeEnd(e) {
+			if (this._times.has(e)) {
+				let n = this._times.get(e) ? ?0,
+				r = Date.now() - n;
+				this.debug(`$ {
+					e
+				}: $ {
+					r
+				}
+				ms`),
+				this._times.delete(e)
+			} else this.debug(`Timer with label $ {
+				e
+			}
+			does not exist.`)
+		}
+		exit() {
+			$done({})
+		}
+		reject() {
+			$done()
+		}
+		decodeParams(e, n) {
+			return e
+		}
+	},
+	L = W;
+	K(L, "instances", {}),
+	K(L, "classNames", {
+		QuanX: (e, n, r) = >new be(e, n, r),
+		Surge: (e, n, r) = >new Z(e, n, r),
+		Loon: (e, n, r) = >new Ye(e, n, r)
+	});
+	var ke = class extends L {
+		getFn(e, n, r) {
+			let s = ke.clientAdapter[n] || n;
+			return super.getFn(e, s, r)
+		}
+		setFn(e, n, r, s) {
+			let o = ke.clientAdapter[n] || n;
+			return super.setFn(e, o, r, s)
+		}
+		init() {
+			try {
+				this.request = this.createProxy($request),
+				this.response = this.createProxy($response)
+			} catch(e) {
+				this.debug(e.toString())
+			}
+		}
+		getVal(e) {
+			return $persistentStore.read(e)
+		}
+		setVal(e, n) {
+			$persistentStore.write(e, n)
+		}
+		msg(e = this.name, n = "", r = "", s) {
+			$notification.post(e, n, r, {
+				url: s ? ?""
+			})
+		}
+		async fetch(e) {
+			return await new Promise((n, r) = >{
+				let {
+					method: s,
+					body: o,
+					bodyBytes: i,
+					...a
+				} = e,
+				c = i ? ?o,
+				f = c instanceof Uint8Array;
+				$httpClient[s.toLowerCase()]({...a,
+					body: c,
+					"binary-mode": f
+				},
+				(m, l, g) = >{
+					m && r(m);
+					let p = f ? "bodyBytes": "body";
+					n({
+						status: l.status || l.statusCode,
+						headers: l.headers,
+						[p] : g
+					})
+				})
+			})
+		}
+		done(e) {
+			let n = e.response ? ?e,
+			r,
+			s;
+			n.bodyBytes ? (r = n.bodyBytes, delete n.bodyBytes, s = {...e
+			},
+			s.response ? s.response.body = r: s.body = r) : s = e,
+			$done(s)
+		}
+		decodeParams(e, n) {
+			return typeof $argument == "string" && !$argument.includes("{{{") && Object.assign(e, JSON.parse($argument)),
+			e
+		}
+	},
+	Z = ke;
+	K(Z, "clientAdapter", {
+		bodyBytes: "body"
+	});
+	var v = class extends L {
+		static transferBodyBytes(e, n) {
+			return e instanceof ArrayBuffer ? n === "Uint8Array" ? new Uint8Array(e) : e: e instanceof Uint8Array && n === "ArrayBuffer" ? e.buffer.slice(e.byteOffset, e.byteLength + e.byteOffset) : e
+		}
+		init() {
+			try {
+				this.request = this.createProxy($request),
+				this.response = this.createProxy($response)
+			} catch(e) {
+				this.debug(e.toString())
+			}
+		}
+		getFn(e, n, r) {
+			let s = v.clientAdapter[n] || n,
+			o = super.getFn(e, s, r);
+			return n === "bodyBytes" && (o = v.transferBodyBytes(o, "Uint8Array")),
+			o
+		}
+		setFn(e, n, r, s) {
+			let o = v.clientAdapter[n] || n,
+			i = r;
+			return n === "bodyBytes" && (i = v.transferBodyBytes(i, "Uint8Array")),
+			super.setFn(e, o, i, s)
+		}
+		getVal(e) {
+			return $prefs.valueForKey(e) ? .replace(/\0/g, "")
+		}
+		setVal(e, n) {
+			$prefs.setValueForKey(e, n)
+		}
+		msg(e = this.name, n = "", r = "", s) {
+			$notify(e, n, r, {
+				"open-url": s ? ?""
+			})
+		}
+		async fetch(e) {
+			return await new Promise(n = >{
+				let r = {
+					url: "",
+					method: "GET"
+				};
+				for (let[s, o] of Object.entries(e)) s === "id" ? r.sessionIndex = o: s === "bodyBytes" ? r.bodyBytes = v.transferBodyBytes(o, "ArrayBuffer") : r[s] = o;
+				e.bodyBytes && delete r.body,
+				$task.fetch(r).then(s = >{
+					let o = {
+						status: 200,
+						headers: {}
+					};
+					for (let[i, a] of Object.entries(s)) i === "sessionIndex" ? o.id = a: i === "bodyBytes" ? o.bodyBytes = v.transferBodyBytes(a, "Uint8Array") : i === "statusCode" ? o.status = a: o[i] = a;
+					n(o)
+				})
+			})
+		}
+		done(e) {
+			let n = e.response ? ?e,
+			r = {};
+			for (let[s, o] of Object.entries(n)) s === "status" ? r.status = `HTTP / 1.1 $ {
+				o
+			}`: s === "bodyBytes" ? r.bodyBytes = v.transferBodyBytes(o, "ArrayBuffer") : r[s] = o;
+			$done(r)
+		}
+	},
+	be = v;
+	K(be, "clientAdapter", {
+		id: "sessionIndex",
+		status: "statusCode"
+	});
+	var Ye = class extends Z {
+		decodeParams(e, n) {
+			let r = {};
+			for (let[s, o] of Object.entries(e)) {
+				let i = n ? . [s] ? ?s,
+				a = this.getVal(i);
+				a && (r[s] = this.transferType(o, a))
+			}
+			return Object.assign(e, r),
+			e
+		}
+		transferType(e, n) {
+			return typeof e == "boolean" ? n === "true": typeof e == "number" ? Number(n) : n
+		}
+	};
+	var b = L.getInstance("YouTube");
+	var D = class {
+		name;
+		needProcess;
+		needSave;
+		message;
+		whiteNo;
+		blackNo;
+		whiteEml;
+		blackEml;
+		msgType;
+		argument;
+		decoder = new TextDecoder("utf-8", {
+			fatal: !1,
+			ignoreBOM: !0
+		});
+		constructor(e, n) {
+			this.name = n,
+			this.msgType = e,
+			this.argument = this.decodeArgument(),
+			b.isDebug = Boolean(this.argument.debug),
+			b.debug(this.name),
+			Object.assign(this, b.getJSON("YouTubeAdvertiseInfo", {
+				whiteNo: [],
+				blackNo: [],
+				whiteEml: [],
+				blackEml: []
+			}))
+		}
+		decodeArgument() {
+			let e = {
+				lyricLang: "\u6B4C\u8BCD\u7FFB\u8BD1\u8BED\u8A00",
+				captionLang: "\u5B57\u5E55\u7FFB\u8BD1\u8BED\u8A00",
+				blockUpload: "\u5C4F\u853D\u4E0A\u4F20\u6309\u94AE",
+				blockImmersive: "\u5C4F\u853D\u9009\u6BB5\u6309\u94AE",
+				debug: "\u542F\u52A8\u8C03\u8BD5\u6A21\u5F0F"
+			},
+			n = {
+				lyricLang: "zh-Hans",
+				captionLang: "zh-Hans",
+				blockUpload: !0,
+				blockImmersive: !0,
+				debug: !1
+			};
+			return b.decodeParams(n, e)
+		}
+		fromBinary(e) {
+			return e instanceof Uint8Array ? (this.message = this.msgType.fromBinary(e), b.debug(`raw: $ {
+				Math.floor(e.length / 1024)
+			}
+			kb`), this) : (b.log("YouTube can not get binaryBody"), b.exit(), this)
+		}
+		async modify() {
+			let e = this.pure();
+			return e instanceof Promise ? await e: e
+		}
+		toBinary() {
+			return this.message.toBinary()
+		}
+		listUnknownFields(e) {
+			return e instanceof E ? e.getType().runtime.bin.listUnknownFields(e) : []
+		}
+		save() {
+			if (this.needSave) {
+				b.debug("Update Config");
+				let e = {
+					whiteNo: this.whiteNo,
+					blackNo: this.blackNo,
+					whiteEml: this.whiteEml,
+					blackEml: this.blackEml
+				};
+				b.setJSON(e, "YouTubeAdvertiseInfo")
+			}
+		}
+		done() {
+			if (this.save(), this.needProcess) {
+				b.timeStart("toBinary");
+				let e = this.toBinary();
+				b.timeEnd("toBinary"),
+				b.debug(`modify: $ {
+					Math.floor(e.length / 1024)
+				}
+				kb`),
+				b.done({
+					bodyBytes: e
+				})
+			}
+			b.debug("use $done({})"),
+			b.exit()
+		}
+		iterate(e = {},
+		n, r) {
+			let s = typeof e == "object" ? [e] : [];
+			for (; s.length;) {
+				let o = s.pop(),
+				i = Object.keys(o);
+				if (typeof n == "symbol") {
+					for (let a of Object.getOwnPropertySymbols(o)) if (a.description === n.description) {
+						r(o, s);
+						break
+					}
+				}
+				for (let a of i) a === n ? r(o, s) : typeof o[a] == "object" && s.push(o[a])
+			}
+		}
+		isAdvertise(e) {
+			let n = this.listUnknownFields(e)[0];
+			return n ? this.handleFieldNo(n) : this.handleFieldEml(e)
+		}
+		handleFieldNo(e) {
+			let n = e.no;
+			if (this.whiteNo.includes(n)) return ! 1;
+			if (this.blackNo.includes(n)) return ! 0;
+			let s = this.decoder.decode(e.data).includes("pagead");
+			return s ? this.blackNo.push(n) : this.whiteNo.push(n),
+			this.needSave = !0,
+			s
+		}
+		handleFieldEml(e) {
+			let n = !1,
+			r = "";
+			return this.iterate(e, "renderInfo", (s, o) = >{
+				if (r = s.renderInfo.layoutRender.eml.split("|")[0], this.whiteEml.includes(r)) n = !1;
+				else if (this.blackEml.includes(r) || /shorts(?!_pivot_item)/.test(r)) n = !0;
+				else {
+					let i = s ? .videoInfo ? .videoContext ? .videoContent;
+					if (i) {
+						let a = this.listUnknownFields(i)[0];
+						n = this.decoder.decode(a.data).includes("pagead"),
+						n ? this.blackEml.push(r) : this.whiteEml.push(r),
+						this.needSave = !0
+					}
+				}
+				o.length = 0
+			}),
+			n
+		}
+		isShorts(e) {
+			let n = !1;
+			return this.iterate(e, "eml", (r, s) = >{
+				n = /shorts(?!_pivot_item)/.test(r.eml),
+				s.length = 0
+			}),
+			n
+		}
+	};
+	function ir(t) {
+		let r = ".",
+		s = "+-a^+6",
+		o = "+-3^+b+-f",
+		i,
+		a,
+		c;
+		for (i = [], a = 0, c = 0; c < t.length; c++) {
+			let f = t.charCodeAt(c);
+			128 > f ? i[a++] = f: (2048 > f ? i[a++] = f >> 6 | 192 : ((f & 64512) == 55296 && c + 1 < t.length && (t.charCodeAt(c + 1) & 64512) == 56320 ? (f = 65536 + ((f & 1023) << 10) + (t.charCodeAt(++c) & 1023), i[a++] = f >> 18 | 240, i[a++] = f >> 12 & 63 | 128) : i[a++] = f >> 12 | 224, i[a++] = f >> 6 & 63 | 128), i[a++] = f & 63 | 128)
+		}
+		for (t = 406644, a = 0; a < i.length; a++) t += i[a],
+		t = Jt(t, s);
+		return t = Jt(t, o),
+		t ^= 3293161072,
+		0 > t && (t = (t & 2147483647) + 2147483648),
+		t %= 1e6,
+		t.toString() + r + (t ^ 406644)
+	}
+	function Jt(t, e) {
+		let n = "a",
+		r = "+",
+		s;
+		for (let o = 0; o < e.length - 2; o += 3) s = e.charAt(o + 2),
+		s = s >= n ? s.charCodeAt(0) - 87 : Number(s),
+		s = e.charAt(o + 1) == r ? t >>> s: t << s,
+		t = e.charAt(o) == r ? t + s & 4294967295 : t ^ s;
+		return t
+	}
+	function Gt(t, e) {
+		return`https: //translate.google.com/translate_a/single?client=gtx&sl=auto&tl=${e}&hl=zh-CN&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&source=bh&ssel=0&tsel=0&kc=1&tk=${ir(t)}&q=${encodeURIComponent(t)}`}var X=class extends D{constructor(e=Rt,n="Browse"){super(e,n)}async pure(){return this.iterate(this.message,"richGridContents",e=>{for(let n=e.richGridContents.length-1;n>=0;n--)this.removeCommonAD(e,n),this.removeShorts(e,n)}),await this.translate(),this}removeCommonAD(e,n){let s=e.richGridContents[n]?.richItemRenderer?.richItemContent;for(let o=s?.length-1;o>=0;o--)this.isAdvertise(s[o])&&(s.splice(o,1),this.needProcess=!0)}removeShorts(e,n){let r=e.richGridContents[n]?.richSectionRenderer;this.isShorts(r)&&(e.richGridContents.splice(n,1),this.needProcess=!0)}getBrowseId(){let e="";return this.iterate(this.message?.responseContext,"key",(n,r)=>{n.key==="browse_id"&&(e=n.value,r.length=0)}),e}async translate(){let e=this.argument.lyricLang?.trim();if(!(this.name==="Browse"&&this.getBrowseId().startsWith("MPLYt"))||e==="off")return;let n="",r,s=!1;if(this.iterate(this.message,"timedLyricsContent",(c,f)=>{r=c.timedLyricsContent,n=c.timedLyricsContent.runs.map(m=>m.text).join(`
+		`),
+		s = !0,
+		f.length = 0
+	}),
+	s || this.iterate(this.message, "description", (c, f) = >{
+		r = c.description.runs[0],
+		n = c.description.runs[0].text,
+		f.length = 0,
+		s = !0
+	}),
+	!s) return;
+	let o = e.split("-")[0],
+	i = Gt(n, e),
+	a = await b.fetch({
+		method: "GET",
+		url: i
+	});
+	if (a.status === 200 && a.body) {
+		let c = JSON.parse(a.body),
+		f = " & Translated by Google",
+		m = c[2].includes(o);
+		r.text ? (r.text = c[0].map(l = >m ? l[0] : l[1] + l[0] || "").join(`\r`), this.iterate(this.message, "footer", (l, g) = >{
+			l.footer.runs[0].text += f,
+			g.length = 0
+		})) : r.runs.length <= c[0].length && (r.runs.forEach((l, g) = >{
+			l.text = m ? c[0][g][0] : l.text + `$ {
+				c[0][g][0]
+			}`
+		}), r.footerLabel += f),
+		this.needProcess = !0
+	}
+}
+},
+ee = class extends X {
+	constructor(e = ge, n = "Next") {
+		super(e, n)
+	}
+	addTranslateTab() {
+		this.iterate(this.message ? .a1F7 ? .musicPlayRender, "items", (e, n) = >{
+			let r = e.items.find(s = >s.tab.info ? .browseInfo ? .browseId.startsWith("MPLYt"));
+			r && (r.tab.name = r.tab.name + "\u21C4"),
+			this.needProcess = !0,
+			n.length = 0
+		})
+	}
+},
+te = class extends D {
+	constructor(e = he, n = "Player") {
+		super(e, n)
+	}
+	pure() {
+		return this.message.adPlacements ? .length && (this.message.adPlacements.length = 0),
+		delete this.message ? .playbackTracking ? .pageadViewthroughconversion,
+		this.addPlayAbility(),
+		this.addTranslateCaption(),
+		this.needProcess = !0,
+		this
+	}
+	addPlayAbility() {
+		let e = this.message ? .playabilityStatus ? .miniPlayer ? .miniPlayerRender;
+		typeof e == "object" && (e.active = !0),
+		typeof this.message.playabilityStatus == "object" && (this.message.playabilityStatus.backgroundPlayer = new $e({
+			backgroundPlayerRender: {
+				active: !0
+			}
+		}))
+	}
+	addTranslateCaption() {
+		let e = this.argument.captionLang;
+		e !== "off" && this.iterate(this.message, "captionTracks", (n, r) = >{
+			let s = n.captionTracks,
+			o = n.audioTracks;
+			if (Array.isArray(s)) {
+				let a = { [e] : 2,
+					en: 1
+				},
+				c = -1,
+				f = 0;
+				for (let m = 0; m < s.length; m++) {
+					let l = s[m],
+					g = a[l.languageCode];
+					g && g > c && (c = g, f = m),
+					l.isTranslatable = !0
+				}
+				if (c !== 2) {
+					let m = new Ve({
+						baseUrl: s[f].baseUrl + ` & tlang = $ {
+							e
+						}`,
+						name: {
+							runs: [{
+								text: `@Enhance($ {
+									e
+								})`
+							}]
+						},
+						vssId: `.$ {
+							e
+						}`,
+						languageCode: e
+					});
+					s.push(m)
+				}
+				if (Array.isArray(o)) {
+					let m = c === 2 ? f: s.length - 1;
+					for (let l of o) l.captionTrackIndices ? .includes(m) || l.captionTrackIndices.push(m),
+					l.defaultCaptionTrackIndex = m,
+					l.captionsInitialState = 3
+				}
+			}
+			let i = {
+				de: "Deutsch",
+				ru: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439",
+				fr: "Fran\xE7ais",
+				fil: "Filipino",
+				ko: "\uD55C\uAD6D\uC5B4",
+				ja: "\u65E5\u672C\u8A9E",
+				en: "English",
+				vi: "Ti\u1EBFng Vi\u1EC7t",
+				"zh-Hant": "\u4E2D\u6587\uFF08\u7E41\u9AD4\uFF09",
+				"zh-Hans": "\u4E2D\u6587\uFF08\u7B80\u4F53\uFF09",
+				und: "@VirgilClyne"
+			};
+			n.translationLanguages = Object.entries(i).map(([a, c]) = >new Je({
+				languageCode: a,
+				languageName: {
+					runs: [{
+						text: c
+					}]
+				}
+			})),
+			r.length = 0
+		})
+	}
+},
+Te = class extends X {
+	constructor(e = Ct, n = "Search") {
+		super(e, n)
+	}
+},
+we = class extends D {
+	constructor(e = Pt, n = "Shorts") {
+		super(e, n)
+	}
+	pure() {
+		let e = this.message.entries ? .length;
+		if (e) for (let n = e - 1; n >= 0; n--) this.message.entries[n].command ? .reelWatchEndpoint ? .overlay || (this.message.entries.splice(n, 1), this.needProcess = !0);
+		return this
+	}
+},
+xe = class extends D {
+	constructor(e = vt, n = "Guide") {
+		super(e, n)
+	}
+	pure() {
+		let e = ["SPunlimited"];
+		return this.argument.blockUpload && e.push("FEuploads"),
+		this.argument.blockImmersive && e.push("FEmusic_immersive"),
+		this.iterate(this.message, "rendererItems", n = >{
+			for (let r = n.rendererItems.length - 1; r >= 0; r--) {
+				let s = n.rendererItems[r] ? .iconRender ? .browseId || n.rendererItems[r] ? .labelRender ? .browseId;
+				e.includes(s) && (n.rendererItems.splice(r, 1), this.needProcess = !0)
+			}
+		}),
+		this
+	}
+},
+Ie = class extends D {
+	constructor(e = $t, n = "Setting") {
+		super(e, n)
+	}
+	pure() {
+		this.iterate(this.message, "categoryId", n = >{
+			if (n.categoryId === 10005) {
+				let r = {
+					f1: 135,
+					f2: 20434,
+					f3: 2,
+					timeInfo: this.message.trackingParams.timeInfo
+				},
+				s = new _e({
+					settingBooleanRenderer: {
+						itemId: 0,
+						enableServiceEndpoint: {
+							trackingParams: r,
+							setClientSettingEndpoint: {
+								settingDatas: {
+									clientSettingEnum: {
+										item: 151
+									},
+									boolValue: !0
+								}
+							}
+						},
+						disableServiceEndpoint: {
+							trackingParams: r,
+							setClientSettingEndpoint: {
+								settingDatas: {
+									clientSettingEnum: {
+										item: 151
+									},
+									boolValue: !1
+								}
+							}
+						},
+						clickTrackingParams: r
+					}
+				});
+				n.subSettings.push(s)
+			}
+		});
+		let e = new Ge({
+			settingCategoryEntryRenderer: {
+				f2: 1,
+				f3: 1,
+				trackingParams: {
+					f1: 2,
+					f2: 20020,
+					f3: 8,
+					timeInfo: this.message.trackingParams.timeInfo
+				},
+				f6: 0,
+				f7: 1,
+				f8: 1,
+				f9: 1,
+				f10: 1,
+				f12: 1
+			}
+		});
+		return this.message.settingItems.push(e),
+		this.needProcess = !0,
+		this
+	}
+},
+Ne = class extends D {
+	player;
+	next;
+	constructor(e = Vt, n = "Watch") {
+		super(e, n),
+		this.player = new te,
+		this.next = new ee
+	}
+	async pure() {
+		for (let e of this.message.contents) e.player && (this.player.message = e.player, await this.player.pure()),
+		e.next && (this.next.message = e.next, await this.next.pure()),
+		this.needProcess = !0;
+		return this
+	}
 };
-
-var D = class {
-    name;
-    needProcess = false;
-    needSave = false;
-    whiteNo = [];
-    blackNo = [];
-    whiteEml = [];
-    blackEml = [];
-    decoder = new TextDecoder("utf-8", { fatal: false, ignoreBOM: true });
-
-    constructor(e, n) {
-        this.name = n;
-        Object.assign(this, b.getJSON("YouTubeAdvertiseInfo", {
-            whiteNo: [],
-            blackNo: [],
-            whiteEml: [],
-            blackEml: []
-        }));
-    }
-
-    fromBinary(e) {
-        if (e instanceof Uint8Array) {
-            this.message = this.msgType.fromBinary(e);
-        } else {
-            $done(); // 替换 b.exit()
-        }
-        return this;
-    }
-
-    async modify() {
-        return this.pure();
-    }
-
-    toBinary() {
-        return this.message.toBinary();
-    }
-
-    listUnknownFields(e) {
-        return e instanceof E ? e.getType().runtime.bin.listUnknownFields(e) : [];
-    }
-
-    save() {
-        if (this.needSave) {
-            let e = {
-                whiteNo: this.whiteNo,
-                blackNo: this.blackNo,
-                whiteEml: this.whiteEml,
-                blackEml: this.blackEml
-            };
-            b.setJSON(e, "YouTubeAdvertiseInfo");
-        }
-    }
-
-    done() {
-        if (this.save(), this.needProcess) {
-            let e = this.toBinary();
-            b.done({ bodyBytes: e });
-        }
-        $done(); // 确保调用 Quantumult X 的 $done 结束脚本
-    }
-
-    iterate(e = {}, n, r) {
-        let s = typeof e == "object" ? [e] : [];
-        while (s.length) {
-            let o = s.pop(), i = Object.keys(o);
-            if (typeof n == "symbol") {
-                for (let a of Object.getOwnPropertySymbols(o)) {
-                    if (a.description === n.description) {
-                        r(o, s);
-                        break;
-                    }
-                }
-            }
-            for (let a of i) {
-                if (a === n) r(o, s);
-                else if (typeof o[a] == "object") s.push(o[a]);
-            }
-        }
-    }
-
-    isAdvertise(e) {
-        let n = this.listUnknownFields(e)[0];
-        return n ? this.handleFieldNo(n) : this.handleFieldEml(e);
-    }
-
-    handleFieldNo(e) {
-        let n = e.no;
-        if (this.whiteNo.includes(n)) return false;
-        if (this.blackNo.includes(n)) return true;
-        let s = this.decoder.decode(e.data).includes("pagead");
-        if (s) {
-            this.blackNo.push(n);
-        } else {
-            this.whiteNo.push(n);
-        }
-        this.needSave = true;
-        return s;
-    }
-
-    handleFieldEml(e) {
-        let n = false, r = "";
-        this.iterate(e, "renderInfo", (s, o) => {
-            r = s.renderInfo.layoutRender.eml.split("|")[0];
-            if (this.whiteEml.includes(r)) {
-                n = false;
-            } else if (this.blackEml.includes(r) || /shorts(?!_pivot_item)/.test(r)) {
-                n = true;
-            } else {
-                let i = s?.videoInfo?.videoContext?.videoContent;
-                if (i) {
-                    let a = this.listUnknownFields(i)[0];
-                    n = this.decoder.decode(a.data).includes("pagead");
-                    n ? this.blackEml.push(r) : this.whiteEml.push(r);
-                    this.needSave = true;
-                }
-            }
-            o.length = 0;
-        });
-        return n;
-    }
-
-    isShorts(e) {
-        let n = false;
-        this.iterate(e, "eml", (r, s) => {
-            n = /shorts(?!_pivot_item)/.test(r.eml);
-            s.length = 0;
-        });
-        return n;
-    }
-};
-
-var b = W.getInstance("YouTube");
+var ar = new Map([["browse", X], ["next", ee], ["player", te], ["search", Te], ["reel_watch_sequence", we], ["guide", xe], ["get_setting", Ie], ["get_watch", Ne]]);
+function qe(t) {
+	for (let[e, n] of ar.entries()) if (t.includes(e)) return new n;
+	return null
+}
+async
+function cr() {
+	let t = qe(b.request.url);
+	if (t) {
+		let e = b.response.bodyBytes;
+		b.timeStart("fromBinary"),
+		t.fromBinary(e),
+		b.timeEnd("fromBinary"),
+		b.timeStart("modify"),
+		await t.modify(),
+		b.timeEnd("modify"),
+		t.done()
+	} else b.msg("YouTube Enhance", "\u811A\u672C\u9700\u8981\u66F4\u65B0", "\u5916\u90E8\u8D44\u6E90 -> \u5168\u90E8\u66F4\u65B0"),
+	b.exit()
+}
+cr().
+catch(t = >{
+	b.log(t.toString())
+}).
+finally(() = >{
+	b.exit()
+});
+})();
