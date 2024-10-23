@@ -70,5 +70,4 @@ function processMapObj(accountAttributesMapObj) {
     // 删除不需要的广告属性
     delete accountAttributesMapObj['ad-use-adlogic'];
     delete accountAttributesMapObj['ad-catalogues'];
-    delete accountAttributesMapObj['ad'];
 }
