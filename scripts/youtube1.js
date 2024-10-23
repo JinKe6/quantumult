@@ -1,4 +1,3 @@
-// Build: 2024/6/11 21:59:22
 (() = >{
 	var _t = Object.defineProperty;
 	var Yt = (t, e, n) = >e in t ? _t(t, e, {
@@ -2979,108 +2978,149 @@
 		request;
 		response;
 		constructor(e, n, r) {
-			this.name = e ?? "";
-			this.isDebug = r?.debug ?? !1;
-			this.className = n ?? "";
-			this.init();
+			this.name = e ? ?"",
+			this.isDebug = r ? .debug ? ?!1,
+			e && this.debug(`$ {
+				e
+			}
+			Start`),
+			this.className = n ? ?"",
+			this.init()
 		}
 		static getInstance(e, n) {
-			return W.instances['QuanX'] || (W.instances['QuanX'] = W.classNames['QuanX'](e, 'QuanX', n)),
-			W.instances['QuanX'];
+			let r = "Surge";
+			return typeof $loon < "u" ? r = "Loon": typeof $task < "u" && (r = "QuanX"),
+			W.instances[r] || (W.instances[r] = W.classNames[r](e, r, n)),
+			W.instances[r]
 		}
 		createProxy(e) {
 			return new Proxy(e, {
 				get: this.getFn,
 				set: this.setFn
-			});
+			})
 		}
 		getFn(e, n, r) {
-			return e[n];
+			return e[n]
 		}
 		setFn(e, n, r, s) {
-			return e[n] = r, !0;
+			return e[n] = r,
+			!0
 		}
 		getJSON(e, n = {}) {
 			let r = this.getVal(e);
-			return r ? JSON.parse(r) : n;
+			return r ? JSON.parse(r) : n
 		}
 		setJSON(e, n) {
-			this.setVal(JSON.stringify(e), n);
+			this.setVal(JSON.stringify(e), n)
 		}
+		msg(e = this.name, n = "", r = "", s) {}
 		timeStart(e) {
-			this._times.set(e, Date.now());
+			this._times.set(e, Date.now())
 		}
 		timeEnd(e) {
 			if (this._times.has(e)) {
-				let n = this._times.get(e) ?? 0;
-				let r = Date.now() - n;
-				this._times.delete(e);
+				let n = this._times.get(e) ? ?0,
+				r = Date.now() - n;
+				this.debug(`$ {
+					e
+				}: $ {
+					r
+				}
+				ms`),
+				this._times.delete(e)
+			} else this.debug(`Timer with label $ {
+				e
 			}
+			does not exist.`)
 		}
 		exit() {
-			$done({});
+			$done({})
 		}
 		reject() {
-			$done();
+			$done()
 		}
 		decodeParams(e, n) {
-			return e;
+			return e
 		}
 	},
 	L = W;
-
-K(L, "instances", {});
-K(L, "classNames", {
-	QuanX: (e, n, r) => new ke(e, n, r)
-});
-
-var ke = class extends L {
-	getFn(e, n, r) {
-		let s = ke.clientAdapter[n] || n;
-		return super.getFn(e, s, r);
-	}
-	setFn(e, n, r, s) {
-		let o = ke.clientAdapter[n] || n;
-		return super.setFn(e, o, r, s);
-	}
-	init() {
-		try {
-			this.request = this.createProxy($request);
-			this.response = this.createProxy($response);
-		} catch (e) {}
-	}
-	getVal(e) {
-		return $persistentStore.read(e);
-	}
-	setVal(e, n) {
-		$persistentStore.write(e, n);
-	}
-	msg(e = this.name, n = "", r = "", s) {
-		$notification.post(e, n, r, { url: s ?? "" });
-	}
-	async fetch(e) {
-		return await new Promise((n, r) => {
-			let { method: s, body: o, bodyBytes: i, ...a } = e,
-				c = i ?? o,
+	K(L, "instances", {}),
+	K(L, "classNames", {
+		QuanX: (e, n, r) = >new be(e, n, r),
+		Surge: (e, n, r) = >new Z(e, n, r),
+		Loon: (e, n, r) = >new Ye(e, n, r)
+	});
+	var ke = class extends L {
+		getFn(e, n, r) {
+			let s = ke.clientAdapter[n] || n;
+			return super.getFn(e, s, r)
+		}
+		setFn(e, n, r, s) {
+			let o = ke.clientAdapter[n] || n;
+			return super.setFn(e, o, r, s)
+		}
+		init() {
+			try {
+				this.request = this.createProxy($request),
+				this.response = this.createProxy($response)
+			} catch(e) {
+				this.debug(e.toString())
+			}
+		}
+		getVal(e) {
+			return $persistentStore.read(e)
+		}
+		setVal(e, n) {
+			$persistentStore.write(e, n)
+		}
+		msg(e = this.name, n = "", r = "", s) {
+			$notification.post(e, n, r, {
+				url: s ? ?""
+			})
+		}
+		async fetch(e) {
+			return await new Promise((n, r) = >{
+				let {
+					method: s,
+					body: o,
+					bodyBytes: i,
+					...a
+				} = e,
+				c = i ? ?o,
 				f = c instanceof Uint8Array;
-			$httpClient[s.toLowerCase()]({ ...a, body: c, "binary-mode": f }, (m, l, g) => {
-				m && r(m);
-				let p = f ? "bodyBytes" : "body";
-				n({ status: l.status || l.statusCode, headers: l.headers, [p]: g });
-			});
-		});
-	}
-	done(e) {
-		let n = e.response ?? e,
-			r, s;
-		n.bodyBytes ? (r = n.bodyBytes, delete n.bodyBytes, s = { ...e }, s.response ? s.response.body = r : s.body = r) : s = e;
-		$done(s);
-	}
-	decodeParams(e, n) {
-		return typeof $argument == "string" && !$argument.includes("{{{") && Object.assign(e, JSON.parse($argument)), e;
-	}
-};
-K(ke, "clientAdapter", { bodyBytes: "body" });
+				$httpClient[s.toLowerCase()]({...a,
+					body: c,
+					"binary-mode": f
+				},
+				(m, l, g) = >{
+					m && r(m);
+					let p = f ? "bodyBytes": "body";
+					n({
+						status: l.status || l.statusCode,
+						headers: l.headers,
+						[p] : g
+					})
+				})
+			})
+		}
+		done(e) {
+			let n = e.response ? ?e,
+			r,
+			s;
+			n.bodyBytes ? (r = n.bodyBytes, delete n.bodyBytes, s = {...e
+			},
+			s.response ? s.response.body = r: s.body = r) : s = e,
+			$done(s)
+		}
+		decodeParams(e, n) {
+			return typeof $argument == "string" && !$argument.includes("{{{") && Object.assign(e, JSON.parse($argument)),
+			e
+		}
+	},
+	Z = ke;
+	K(Z, "clientAdapter", {
+		bodyBytes: "body"
+	});
 	var v = class extends L {
 		static transferBodyBytes(e, n) {
 			return e instanceof ArrayBuffer ? n === "Uint8Array" ? new Uint8Array(e) : e: e instanceof Uint8Array && n === "ArrayBuffer" ? e.buffer.slice(e.byteOffset, e.byteLength + e.byteOffset) : e
