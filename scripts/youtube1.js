@@ -1,3 +1,4 @@
+// Build: 2024/6/11 21:59:22
 (() = >{
 	var _t = Object.defineProperty;
 	var Yt = (t, e, n) = >e in t ? _t(t, e, {
@@ -3014,6 +3015,13 @@
 			this.setVal(JSON.stringify(e), n)
 		}
 		msg(e = this.name, n = "", r = "", s) {}
+		debug(e) {
+			this.isDebug && (typeof e == "object" && (e = JSON.stringify(e)), console.log(e))
+		}
+		log(e) {
+			typeof e == "object" && (e = JSON.stringify(e)),
+			console.log(e)
+		}
 		timeStart(e) {
 			this._times.set(e, Date.now())
 		}
