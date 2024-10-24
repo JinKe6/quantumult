@@ -1,4 +1,4 @@
-hostname = *.coolapk.com
+hostname = api.coolapk.com
 
 ^https?:\/\/api\.coolapk\.com\/v6\/main\/init url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/main/scripts/coolapk.js
 ^https?:\/\/api\.coolapk\.com\/v6\/main\/indexV8 url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/main/scripts/coolapk.js
