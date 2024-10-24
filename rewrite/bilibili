@@ -1,4 +1,4 @@
-hostname = *.bilibili.com
+hostname = app.bilibili.com,api.bilibili.com
 
 ^https?:\/\/(app|api)\.bilibili\.com\/x\/(v2\/splash\/show|vip\/ads\/materials) url reject-200
 ^https?:\/\/app\.bilibili\.com\/x\/v2\/splash\/list url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/main/scripts/bilibili.js
