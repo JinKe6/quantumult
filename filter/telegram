@@ -5,6 +5,7 @@
 //USER-AGENT
 //IP-CIDR
 
+HOST-SUFFIX,swiftgram.app,Telegram
 IP-CIDR,109.239.140.0/24,Telegram
 IP-CIDR,149.154.160.0/20,Telegram
 IP-CIDR,5.28.192.0/18,Telegram
