@@ -1,6 +1,5 @@
-//哔哩哔哩概念+ipad端
+hostname = *.bilibili.com
 
-^https?:\/\/(data|cm)\.bilibili\.com\/ url reject-200
 ^https?:\/\/(app|api)\.bilibili\.com\/x\/(v2\/splash\/show|vip\/ads\/materials) url reject-200
 ^https?:\/\/app\.bilibili\.com\/x\/v2\/splash\/list url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/main/scripts/bilibili.js
 ^https?:\/\/app\.bilibili\.com\/x\/v2\/feed url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/main/scripts/bilibili.js
@@ -8,5 +7,3 @@
 ^https?:\/\/api\.bilibili\.com\/pgc\/page\/(cinema|bangumi) url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/main/scripts/bilibili.js
 ^https?:\/\/app\.bilibili\.com\/x\/v2\/account\/mine url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/main/scripts/bilibili.js
 ^https?:\/\/app\.bilibili\.com\/x\/v2\/account\/mine\/ipad url script-response-body https://raw.githubusercontent.com/JinKe6/quantumult/main/scripts/bilibili.js
-
-hostname = *.bilibili.com
