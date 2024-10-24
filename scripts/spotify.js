@@ -4,27 +4,35 @@ const spotifyJson = {"options":{"java_package":"com.smile.spotify.model"},"neste
 const url = $request.url;
 const method = $request.method;
 const postMethod = "POST";
-const binaryBody = new Uint8Array($response.bodyBytes);
+const binaryBody = new Uint8Array($response.bodyBytes); // 直接获取二进制响应体
 let accountAttributesMapObj;
 let body;
 
 if (url.includes("bootstrap/v1/bootstrap") && method === postMethod) {
     let bootstrapResponseType = protobuf.Root.fromJSON(spotifyJson).lookupType("BootstrapResponse");
     let bootstrapResponseObj = bootstrapResponseType.decode(binaryBody);
-    accountAttributesMapObj = bootstrapResponseObj.ucsResponseV0.success.customization.success.accountAttributesSuccess.accountAttributes;
-    processMapObj(accountAttributesMapObj);
-    body = bootstrapResponseType.encode(bootstrapResponseObj).finish();
+    accountAttributesMapObj = bootstrapResponseObj.ucsResponseV0?.success?.customization?.success?.accountAttributesSuccess?.accountAttributes;
+    if (accountAttributesMapObj) {
+        processMapObj(accountAttributesMapObj);
+        body = bootstrapResponseType.encode(bootstrapResponseObj).finish();
+    } else {
+        $notification.post('spotify解锁premium', "解析错误", "bootstrapResponseObj 中没有找到 accountAttributes");
+    }
 } else if (url.includes("user-customization-service/v1/customize") && method === postMethod) {
     let ucsResponseWrapperType = protobuf.Root.fromJSON(spotifyJson).lookupType("UcsResponseWrapper");
     let ucsResponseWrapperMessage = ucsResponseWrapperType.decode(binaryBody);
-    accountAttributesMapObj = ucsResponseWrapperMessage.success.accountAttributesSuccess.accountAttributes;
-    processMapObj(accountAttributesMapObj);
-    body = ucsResponseWrapperType.encode(ucsResponseWrapperMessage).finish();
+    accountAttributesMapObj = ucsResponseWrapperMessage?.success?.accountAttributesSuccess?.accountAttributes;
+    if (accountAttributesMapObj) {
+        processMapObj(accountAttributesMapObj);
+        body = ucsResponseWrapperType.encode(ucsResponseWrapperMessage).finish();
+    } else {
+        $notification.post('spotify解锁premium', "解析错误", "ucsResponseWrapperMessage 中没有找到 accountAttributes");
+    }
 } else {
     $notification.post('spotify解锁premium', "路径/请求方法匹配错误:", method + "," + url);
 }
 
-$done({ bodyBytes: body.buffer.slice(body.byteOffset, body.byteLength + body.byteOffset) });
+$done({ bodyBytes: body?.buffer?.slice(body.byteOffset, body.byteLength + body.byteOffset) });
 
 function processMapObj(accountAttributesMapObj) {
     const attributeUpdates = {
